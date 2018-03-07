@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" href="test.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://res.cloudinary.com/demo/raw/upload/jquery.ui.widget_ypnflw.js"></script>
+	<script type="text/javascript" src="https://res.cloudinary.com/demo/raw/upload/jquery.iframe-transport_ajzwk5.js"></script>
+	<script type="text/javascript" src="https://res.cloudinary.com/demo/raw/upload/jquery.fileupload_adf5kt.js"></script>
+	<script type="text/javascript" src="https://res.cloudinary.com/demo/raw/upload/v1425809551/jquery.cloudinary_t0p9km.js"></script>
+    
+  <style type="text/css">
+    .progress_wrapper {
+  display: block;
+  margin: 5px 0;
+  border: 1px;
+  width: 100%;
+  height: 20px;
+  background-color: grey;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.progress_bar {
+  width: 0px;
+  height: 20px;
+  background-color: #1fd94d;
+  text-align: center;
+  line-height: 21px;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+.text {
+    position: absolute;
+    margin: 0 auto;
+    width: 100%;
+}
+
+p{
+    font-size: large;
+    background-color: rgb(237, 237, 225);
+}
+
+span{
+    font-weight: bold;
+}
+</style>
+
+<title>Unsigned upload - jQuery and Cloudinary</title>
+
+<script type="text/javascript">//<![CDATA[
+window.onload=function(){
+var cloud_name = 'dvlpuh0iw';
+var preset_name = 'wjgidlpo';
+
+if (cloud_name != '' && preset_name != '') $('#message').remove();
+
+$.cloudinary.config({
+  cloud_name: cloud_name
+})
+
+$('.upload_field').unsigned_cloudinary_upload(preset_name, {
+  cloud_name: cloud_name
+}, {
+  multiple: true
+}).bind('cloudinarydone', function(e, data) {
+	$('.thumbnailTitle').text('Thumbnail');
+	$('.thumbnailUrl').text('Thumbnail URL:' + 'https://res.cloudinary.com/'+cloud_name+'/video/upload/c_scale,dl_200,e_loop:2,w_200/'+data.result.public_id+'.jpg');
+	$('.gifTitle').text('Animated gif');
+	$('.gifUrl').text('Animated gif URL: ' + 'https://res.cloudinary.com/'+cloud_name+'/video/upload/c_scale,dl_200,e_loop:2,w_200/'+data.result.public_id+'.gif');
+	$('.thumbnail').attr('src', 'https://res.cloudinary.com/'+cloud_name+'/video/upload/c_scale,dl_200,e_loop:2,w_200/'+data.result.public_id+'.jpg');
+	$('.gif').attr('src', 'https://res.cloudinary.com/'+cloud_name+'/video/upload/c_scale,dl_200,e_loop:2,w_200/'+data.result.public_id+'.gif');
+  }
+
+).bind('cloudinaryprogress', function(e, data) {
+	var percent = Math.round((data.loaded * 100.0) / data.total);
+  $('.progress_bar').css('width', percent + '%');
+  $('.progress_wrapper .text').text(percent + '%');
+});
+
+}//]]> 
+
+</script>
+
+</head>
+<body>
+<form class="upload_form">
+  <input type="file" name="file" class="upload_field">
+
+</form>
+<div class="progress_wrapper">
+  <div class="progress_bar"><div class="text"></div></div>
+  
+</div>
+<div>
+<h1 class="thumbnailTitle"></h1>
+<p class="thumbnailUrl"></p>
+<img class="thumbnail"></img>
+</div>
+<div>
+<h1 class="gifTitle"></h1>
+<p class="gifUrl"></p>
+<img class="gif" ></img>
+</div>
+  
+  <script>
+  // tell the embed parent frame the height of the content
+  if (window.parent && window.parent.parent){
+    window.parent.parent.postMessage(["resultsFrame", {
+      height: document.body.getBoundingClientRect().height,
+      slug: "None"
+    }], "*")
+  }
+</script>
+
+</body>
+
+</html>
+
