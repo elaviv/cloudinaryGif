@@ -39,13 +39,14 @@ $('.upload_field').unsigned_cloudinary_upload(preset_name, {
 }).bind('cloudinarydone', function(e, data) {
 
 	//EAVIV: the below line create the URLs dynamically using AJAX, however, it does not work if you run the html from local directory instead of from a  server
-	var gifUrl = $.cloudinary.image(data.result.public_id+'.gif', {video_sampling: _video_sampling, delay: _delay, width: _width, effect: "loop", crop: "scale", resource_type: "video"})[0].src;
+	var thumbnailUrl = $.cloudinary.image(data.result.public_id+'.jpg', {width: _width, crop: "scale", resource_type: "video"})[0].src;
 
-	gifUrl = 'https://res.cloudinary.com/'+cloud_name+'/video/upload/c_scale,vs_'+_video_sampling+',dl_'+_delay+',e_loop,w_'+_width+'/'+data.result.public_id+'.gif';
+	thumbnailUrl = 'https://res.cloudinary.com/'+cloud_name+'/video/upload/c_scale,w_'+_width+'/'+data.result.public_id+'.jpg';
 	
-	$('.gifTitle').text('Animated gif');
-	$('.gifUrl').text('Animated gif URL: ' + gifUrl);
-	$('.gif').attr('src', gifUrl);
+	$('.thumbnailTitle').text('Thumbnail');
+	$('.thumbnailUrl').text('Thumbnail URL:' + thumbnailUrl);
+	$('.thumbnail').attr('src', thumbnailUrl);
+
   }
 
 ).bind('cloudinaryprogress', function(e, data) {
@@ -68,13 +69,12 @@ $('.upload_field').unsigned_cloudinary_upload(preset_name, {
   <div class="progress_bar"><div class="text"></div></div>
   
 </div>
-
 <div>
-<h1 class="gifTitle"></h1>
-<p class="gifUrl"></p>
-<img class="gif" ></img>
+<h1 class="thumbnailTitle"></h1>
+<p class="thumbnailUrl"></p>
+<img class="thumbnail"></img>
 </div>
-  
+
   <script>
   // tell the embed parent frame the height of the content
   if (window.parent && window.parent.parent){
