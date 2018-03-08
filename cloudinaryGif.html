@@ -18,10 +18,14 @@
 
 <title>Unsigned upload - jQuery and Cloudinary</title>
 
-<script type="text/javascript">//<![CDATA[
+<script type="text/javascript">
 window.onload=function(){
 var cloud_name = 'dvlpuh0iw';
 var preset_name = 'wjgidlpo';
+var _video_sampling = '40';
+var _delay = '100';
+var _width = 220;
+var _height = 220;
 
 if (cloud_name != '' && preset_name != '') $('#message').remove();
 
@@ -34,12 +38,20 @@ $('.upload_field').unsigned_cloudinary_upload(preset_name, {
 }, {
   multiple: true
 }).bind('cloudinarydone', function(e, data) {
+
+	//EAVIV: these two lines create the URLs dynamically using AJAX, however, it does not work if you run the html from local directory instead of from a  server
+	var gifUrl = $.cloudinary.image(data.result.public_id+'.gif', {video_sampling: _video_sampling, delay: _delay, width: _width, height: _height, effect: "loop", crop: "scale", resource_type: "video"})[0].src;
+	var thumbnailUrl = $.cloudinary.image(data.result.public_id+'.jpg', {video_sampling: _video_sampling, delay: _delay, width: _width, height: _height, effect: "loop", crop: "scale", resource_type: "video"})[0].src;
+
+	gifUrl = 'https://res.cloudinary.com/'+cloud_name+'/video/upload/c_scale,vs_'+_video_sampling+',dl_'+_delay+',e_loop,w_'+_width+',h_'+_height+'/'+data.result.public_id+'.gif';
+	thumbnailUrl = 'https://res.cloudinary.com/'+cloud_name+'/video/upload/c_scale,vs_'+_video_sampling+',dl_'+_delay+',e_loop,w_'+_width+',h_'+_height+'/'+data.result.public_id+'.jpg';
+	
 	$('.thumbnailTitle').text('Thumbnail');
-	$('.thumbnailUrl').text('Thumbnail URL:' + 'https://res.cloudinary.com/'+cloud_name+'/video/upload/c_scale,dl_200,e_loop:2,w_200/'+data.result.public_id+'.jpg');
+	$('.thumbnailUrl').text('Thumbnail URL:' + thumbnailUrl);
 	$('.gifTitle').text('Animated gif');
-	$('.gifUrl').text('Animated gif URL: ' + 'https://res.cloudinary.com/'+cloud_name+'/video/upload/c_scale,dl_200,e_loop:2,w_200/'+data.result.public_id+'.gif');
-	$('.thumbnail').attr('src', 'https://res.cloudinary.com/'+cloud_name+'/video/upload/c_scale,dl_200,e_loop:2,w_200/'+data.result.public_id+'.jpg');
-	$('.gif').attr('src', 'https://res.cloudinary.com/'+cloud_name+'/video/upload/c_scale,dl_200,e_loop:2,w_200/'+data.result.public_id+'.gif');
+	$('.gifUrl').text('Animated gif URL: ' + gifUrl);
+	$('.thumbnail').attr('src', thumbnailUrl);
+	$('.gif').attr('src', gifUrl);
   }
 
 ).bind('cloudinaryprogress', function(e, data) {
