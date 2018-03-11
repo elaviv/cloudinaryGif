@@ -20,6 +20,7 @@
 
 <script type="text/javascript">
 window.onload=function(){
+
 var cloud_name = 'dvlpuh0iw';
 var preset_name = 'wjgidlpo';
 var _video_sampling = '40';
@@ -46,6 +47,7 @@ $('.upload_field').unsigned_cloudinary_upload(preset_name, {
 	$('.gifTitle').text('Animated gif');
 	$('.gifUrl').text('Animated gif URL: ' + gifUrl);
 	$('.gif').attr('src', gifUrl);
+	
   }
 
 ).bind('cloudinaryprogress', function(e, data) {
@@ -73,6 +75,7 @@ $('.upload_field').unsigned_cloudinary_upload(preset_name, {
 <h1 class="gifTitle"></h1>
 <p class="gifUrl"></p>
 <img class="gif" ></img>
+
 </div>
   
   <script>
